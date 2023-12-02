@@ -28,7 +28,7 @@
 	const handleChildCreation = ({ detail }: CustomEvent) => {
 		const child = detail;
 		const localChildren = getLocalStorageChildren();
-		localStorage.setItem('one:localChildren', JSON.stringify([...localChildren, child]));
+		localStorage.setItem('one:children', JSON.stringify([...localChildren, child]));
 		children = [...children, child];
 		showAddModal = false;
 	};

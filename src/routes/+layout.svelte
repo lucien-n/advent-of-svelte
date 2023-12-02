@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { fade } from 'svelte/transition';
 	import '../app.pcss';
 </script>
 
-<main class="w-full h-full overflow-hidden">
-	<slot />
-</main>
+{#key $page.url}
+	<main class="w-full h-full overflow-hidden" in:fade={{ duration: 200 }}>
+		<slot />
+	</main>
+{/key}

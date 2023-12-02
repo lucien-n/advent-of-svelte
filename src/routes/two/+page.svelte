@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
 	import Cookie from './cookie.svelte';
 
 	let cookies = 0;
@@ -19,7 +20,7 @@
 	const getLocalCookies = () => JSON.parse(localStorage.getItem('two:cookies') ?? '0');
 </script>
 
-<div class="flex flex-col items-center gap-8 justify-center h-full">
+<div class="flex flex-col items-center gap-8 justify-center h-full" in:fly={{ y: -200 }}>
 	<h1 class="text-5xl font-extrabold text-center">{cookies}</h1>
 	<Cookie on:click={handleCookieClick} />
 </div>

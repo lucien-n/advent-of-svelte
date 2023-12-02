@@ -11,6 +11,8 @@
 	on:mousedown={() => (clicked = true)}
 	on:mouseup={() => (clicked = false)}
 	on:mouseleave={() => (clicked = false)}
+	on:touchstart={() => (clicked = true)}
+	on:touchend={() => (clicked = false)}
 	on:click={() => dispatch('click', 'left')}
 	on:auxclick={() => dispatch('click', 'right')}
 	on:contextmenu={(e) => e.preventDefault()}

@@ -1,5 +1,7 @@
 <script lang="ts">
+	import type { Child } from '$lib/one/types';
 	import * as Card from '$shadcn/ui/card';
+	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 	import type { PageData } from './$types';
 	import NewForm from './new-form.svelte';
@@ -13,14 +15,29 @@
 	} = data);
 
 	let showAddModal = false;
+	let children: Child[] = [];
+
+	onMount(async () => {
+		const fetchedChildren = await childrenPromise;
+		children = [...fetchedChildren, ...getLocalStorageChildren()];
+	});
+
+	const getLocalStorageChildren = (): Child[] =>
+		JSON.parse(localStorage.getItem('one:children') ?? '[]');
+
+	const handleChildCreation = ({ detail }: CustomEvent) => {
+		const child = detail;
+		const localChildren = getLocalStorageChildren();
+		localStorage.setItem('one:localChildren', JSON.stringify([...localChildren, child]));
+		children = [...children, child];
+		showAddModal = false;
+	};
 </script>
 
 <div class="py-10 container h-full">
-	{#await childrenPromise}
-		<p>awaiting children</p>
-	{:then children}
+	{#key children.length}
 		<Table {children} on:add={() => (showAddModal = true)} />
-	{/await}
+	{/key}
 </div>
 
 {#if showAddModal}
@@ -37,7 +54,7 @@
 					<h1 class="text-3xl font-bold text-center">Add a child</h1>
 				</Card.Header>
 				<Card.Content class="text-left">
-					<NewForm {form} />
+					<NewForm {form} on:success={handleChildCreation} />
 				</Card.Content>
 			</Card.Root>
 		</div>

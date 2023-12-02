@@ -14,6 +14,7 @@
 		loading = true;
 		return async ({ result }) => {
 			loading = false;
+			dispatch(result.type, result.data);
 		};
 	};
 </script>

@@ -29,6 +29,9 @@ export const actions: Actions = {
 
 		const { name, tally } = form.data;
 
-		console.log(name, tally);
+		return {
+			name,
+			tally
+		};
 	}
 };

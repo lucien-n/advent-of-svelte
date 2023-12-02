@@ -10,6 +10,7 @@
 
 	$: {
 		columns.forEach((col, index) => {
+			if (!col) return;
 			const digit = digits[index];
 			col.style.translate = `0em ${digit * -1.5}em`;
 		});

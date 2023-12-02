@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Counter from '$shadcn/counter.svelte';
 	import { Button } from '$shadcn/ui/button';
 	import { RotateCw } from 'lucide-svelte';
 	import { onMount } from 'svelte';
@@ -39,7 +40,9 @@
 
 <div class="flex flex-col items-center justify-center h-full">
 	<div class="flex flex-col relative gap-8" bind:this={parentNode}>
-		<h1 class="text-5xl font-extrabold text-center">{cookies}</h1>
+		<div class="mx-auto">
+			<Counter count={cookies} />
+		</div>
 		<Cookie on:click={handleCookieClick} />
 		{#each cookiePopups as cookiePopup (cookiePopup.id)}
 			{#if parentNode}

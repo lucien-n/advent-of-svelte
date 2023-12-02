@@ -18,7 +18,7 @@
 </script>
 
 <span class="absolute cookie-popup pointer-events-none" bind:this={node}>
-	<p class="text-3xl">{symbol}1</p>
+	<p class="text-3xl font-bold">{symbol}1</p>
 </span>
 
 <style>

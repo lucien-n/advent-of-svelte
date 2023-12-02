@@ -2,7 +2,6 @@
 	import { Button } from '$shadcn/ui/button';
 	import { RotateCw } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
 	import CookiePopup from './cookie-popup.svelte';
 	import Cookie from './cookie.svelte';
 
@@ -38,7 +37,7 @@
 	};
 </script>
 
-<div class="flex flex-col items-center justify-center h-full" in:fly={{ y: -200 }}>
+<div class="flex flex-col items-center justify-center h-full">
 	<div class="flex flex-col relative gap-8" bind:this={parentNode}>
 		<h1 class="text-5xl font-extrabold text-center">{cookies}</h1>
 		<Cookie on:click={handleCookieClick} />

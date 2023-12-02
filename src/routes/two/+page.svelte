@@ -29,7 +29,7 @@
 	const getLocalCookies = () => JSON.parse(localStorage.getItem('two:cookies') ?? '0');
 
 	const createCookiePopup = (symbol: '+' | '-') => {
-		const id = Math.floor(Math.random() * 9999);
+		const id = new Date().getTime();
 		const comp = CookiePopup;
 		cookiePopups = [...cookiePopups, { id, comp, symbol }];
 		setTimeout(() => {

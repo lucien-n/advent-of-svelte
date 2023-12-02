@@ -4,6 +4,7 @@
 	import { Button } from '$shadcn/ui/button';
 	import { RotateCw } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
 	import CookiePopup from './cookie-popup.svelte';
 	import Cookie from './cookie.svelte';
 
@@ -11,6 +12,12 @@
 	let parentNode: HTMLElement;
 	let cookiePopups: { id: number; comp: any; symbol: '+' | '-' }[] = [];
 	let rotateCookie = false;
+
+	const santaFaces = [
+		{ cookies: 500, img: 'santa-flabbergasted.jpg' },
+		{ cookies: 100, img: 'santa-awkward.jpg' },
+		{ cookies: 0, img: 'santa-happy.jpg' }
+	];
 
 	onMount(() => setCookies(getLocalCookies()));
 
@@ -48,6 +55,27 @@
 
 <div class="flex flex-col items-center justify-center h-full">
 	<div class="flex flex-col relative gap-8" bind:this={parentNode}>
+		<div
+			class="absolute w-24 aspect-square overflow-hidden -left-12 -top-12 rounded-full border-8 border-[#835cb6] bg-[#835cb6]"
+		>
+			{#each santaFaces as santaFace}
+				{#if cookies <= 0}
+					<img
+						src="santa-angry.jpg"
+						alt="santa angry"
+						class="rounded-full w-fit aspect-square object-cover"
+					/>
+				{:else if cookies >= santaFace.cookies}
+					<img
+						in:fly={{ x: -200, duration: 150, delay: 150 }}
+						out:fly={{ x: -200, duration: 150 }}
+						src={santaFace.img}
+						alt="santa"
+						class="rounded-full w-fit aspect-square object-cover"
+					/>
+				{/if}
+			{/each}
+		</div>
 		<div class="mx-auto">
 			<Counter count={cookies} />
 		</div>

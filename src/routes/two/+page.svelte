@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import Counter from '$shadcn/counter.svelte';
 	import { Button } from '$shadcn/ui/button';
 	import { RotateCw } from 'lucide-svelte';
@@ -9,6 +10,7 @@
 	let cookies = 0;
 	let parentNode: HTMLElement;
 	let cookiePopups: { id: number; comp: any; symbol: '+' | '-' }[] = [];
+	let rotateCookie = false;
 
 	onMount(() => setCookies(getLocalCookies()));
 
@@ -36,6 +38,12 @@
 			cookiePopups = cookiePopups.filter((popup) => popup.id !== id);
 		}, 1500);
 	};
+
+	const resetCookies = () => {
+		setCookies(0);
+		rotateCookie = true;
+		setTimeout(() => (rotateCookie = false), 500);
+	};
 </script>
 
 <div class="flex flex-col items-center justify-center h-full">
@@ -43,7 +51,9 @@
 		<div class="mx-auto">
 			<Counter count={cookies} />
 		</div>
-		<Cookie on:click={handleCookieClick} />
+		<span class={cn(rotateCookie && 'rotate-[360deg] transition-all duration-500')}>
+			<Cookie on:click={handleCookieClick} />
+		</span>
 		{#each cookiePopups as cookiePopup (cookiePopup.id)}
 			{#if parentNode}
 				<svelte:component this={cookiePopup.comp} {parentNode} symbol={cookiePopup.symbol} />
@@ -51,7 +61,7 @@
 		{/each}
 	</div>
 	<div class="mx-auto bottom-3 absolute">
-		<Button variant="ghost" on:click={() => setCookies(0)}>
+		<Button variant="ghost" on:click={resetCookies}>
 			<RotateCw />
 			<p>Reset</p></Button
 		>

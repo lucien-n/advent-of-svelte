@@ -1,35 +1,23 @@
 <script lang="ts">
+	import { createCookiesStore } from '$lib/two/cookies';
 	import { cn } from '$lib/utils';
 	import Counter from '$shadcn/counter.svelte';
 	import { Button } from '$shadcn/ui/button';
 	import { RotateCw } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 	import CookiePopup from './cookie-popup.svelte';
 	import Cookie from './cookie.svelte';
 	import Santa from './santa.svelte';
 
-	let cookies = 0;
+	let cookies = createCookiesStore('two:cookies');
 	let parentNode: HTMLElement;
 	let cookiePopups: { id: number; comp: any; symbol: '+' | '-' }[] = [];
 	let rotateCookie = false;
 
-	onMount(() => setCookies(getLocalCookies()));
-
 	const handleCookieClick = ({ detail: click }: { detail: 'left' | 'right' }) => {
-		setCookies(click === 'left' ? cookies + 1 : cookies - 1);
+		if (click === 'left') cookies.increment();
+		else cookies.decrement();
 		createCookiePopup(click === 'left' ? '+' : '-');
 	};
-
-	const setCookies = (count: number) => {
-		if (count < 0) count = 0;
-		cookies = count;
-		setLocalCookies(count);
-	};
-
-	const setLocalCookies = (count: number) =>
-		localStorage.setItem('two:cookies', JSON.stringify(count));
-
-	const getLocalCookies = () => JSON.parse(localStorage.getItem('two:cookies') ?? '0');
 
 	const createCookiePopup = (symbol: '+' | '-') => {
 		const id = new Date().getTime();
@@ -41,7 +29,7 @@
 	};
 
 	const resetCookies = () => {
-		setCookies(0);
+		cookies.reset();
 		rotateCookie = true;
 		setTimeout(() => (rotateCookie = false), 500);
 	};
@@ -52,10 +40,10 @@
 		<div
 			class="absolute w-24 aspect-square overflow-hidden -left-12 -top-12 rounded-full border-8 border-[#835cb6] bg-[#835cb6]"
 		>
-			<Santa {cookies} />
+			<Santa cookies={$cookies} />
 		</div>
 		<div class="mx-auto">
-			<Counter count={cookies} />
+			<Counter count={$cookies} />
 		</div>
 		<span class={cn(rotateCookie && 'rotate-[360deg] transition-all duration-500')}>
 			<Cookie on:click={handleCookieClick} />

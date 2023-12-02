@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 
 	export let parentNode: HTMLElement;
+	export let symbol: '+' | '-';
 
 	let node: HTMLSpanElement;
 	let x = 0;
@@ -17,7 +18,7 @@
 </script>
 
 <span class="absolute cookie-popup pointer-events-none" bind:this={node}>
-	<p class="text-3xl">+1</p>
+	<p class="text-3xl">{symbol}1</p>
 </span>
 
 <style>

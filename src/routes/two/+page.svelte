@@ -6,7 +6,7 @@
 
 	let cookies = 0;
 	let parentNode: HTMLElement;
-	let cookiePopups: { id: number; comp: any }[] = [];
+	let cookiePopups: { id: number; comp: any; symbol: '+' | '-' }[] = [];
 
 	onMount(() => (cookies = getLocalCookies()));
 
@@ -15,7 +15,7 @@
 		else cookies -= 1;
 		if (cookies < 0) cookies = 0;
 		setLocalCookies(cookies);
-		createCookiePopup();
+		createCookiePopup(click === 'left' ? '+' : '-');
 	};
 
 	const setLocalCookies = (count: number) =>
@@ -23,10 +23,10 @@
 
 	const getLocalCookies = () => JSON.parse(localStorage.getItem('two:cookies') ?? '0');
 
-	const createCookiePopup = () => {
+	const createCookiePopup = (symbol: '+' | '-') => {
 		const id = Math.floor(Math.random() * 9999);
 		const comp = CookiePopup;
-		cookiePopups = [...cookiePopups, { id, comp }];
+		cookiePopups = [...cookiePopups, { id, comp, symbol }];
 		setTimeout(() => {
 			cookiePopups = cookiePopups.filter((popup) => popup.id !== id);
 		}, 1500);
@@ -39,7 +39,7 @@
 		<Cookie on:click={handleCookieClick} />
 		{#each cookiePopups as cookiePopup (cookiePopup.id)}
 			{#if parentNode}
-				<svelte:component this={cookiePopup.comp} {parentNode} />
+				<svelte:component this={cookiePopup.comp} {parentNode} symbol={cookiePopup.symbol} />
 			{/if}
 		{/each}
 	</div>
